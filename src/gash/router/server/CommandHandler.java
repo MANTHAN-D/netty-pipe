@@ -16,17 +16,16 @@
 package gash.router.server;
 
 import gash.router.server.edges.EdgeInfo;
+import gash.router.server.queue.ChannelQueue;
+import gash.router.server.queue.QueueFactory;
+import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gash.router.container.RoutingConf;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common.Failure;
 import pipe.work.Work;
-import pipe.work.Work.WorkMessage;
-import routing.Pipe.CommandMessage;
+import routing.Pipe;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
@@ -36,9 +35,10 @@ import routing.Pipe.CommandMessage;
  * @author gash
  * 
  */
-public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> {
+public class CommandHandler extends SimpleChannelInboundHandler<Pipe.CommandRequest> {
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
+	private ChannelQueue queue;
 
 	public CommandHandler(RoutingConf conf) {
 		if (conf != null) {
@@ -53,8 +53,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	 * 
 	 * @param msg
 	 */
-	public void handleMessage(CommandMessage msg, Channel channel) {
-		boolean msgDropFlag;
+	public void handleMessage(Pipe.CommandRequest msg, Channel channel) {
 		if (msg == null) {
 			// TODO add logging
 			System.out.println("ERROR: Unexpected content - " + msg);
@@ -64,40 +63,6 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		PrintUtil.printCommand(msg);
 
 		try {
-			// TODO How can you implement this without if-else statements? // changes added by Manthan
-			if (msg.hasPing()) {
-				logger.info("ping from " + msg.getHeader().getNodeId());
-				if(msg.getHeader().getDestinationHost().equals(Integer.toString( conf.getCommandPort()))){
-					//handle message by self
-					System.out.println("Message for me: "+ msg.getMessage() + " from "+ msg.getHeader().getSourceHost());
-				}
-				else{ //message doesn't belong to current node. Forward on other edges
-					msgDropFlag = true;
-					if(MessageServer.getEmon() != null){// forward if Comm-worker port is active
-						for(EdgeInfo ei :MessageServer.getEmon().getOutboundEdgeInfoList()){
-							if(ei.isActive() && ei.getChannel() != null){// check if channel of outbound edge is active
-								logger.info("Workmessage being sent");
-								WorkMessage.Builder wb = WorkMessage.newBuilder();
-								wb.setHeader(msg.getHeader());
-								wb.setSecret(1234567809);
-								wb.setPing(true);
-								ei.getChannel().writeAndFlush(wb.build());
-								msgDropFlag = false;
-								logger.info("Workmessage sent");
-							}
-						}
-						if(msgDropFlag)
-							logger.info("Message dropped <node,message>: <" + msg.getHeader().getNodeId()+"," + msg.getMessage()+">");
-					}
-					else{// drop the message or queue it for limited time to send to connected node
-						//todo
-					}
-
-				}
-			} else if (msg.hasMessage()) {
-				logger.info(msg.getMessage());
-			} else {
-			}
 
 		} catch (Exception e) {
 			// TODO add logging
@@ -105,8 +70,10 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			eb.setId(conf.getNodeId());
 			eb.setRefId(msg.getHeader().getNodeId());
 			eb.setMessage(e.getMessage());
-			CommandMessage.Builder rb = CommandMessage.newBuilder(msg);
-			rb.setErr(eb);
+			Pipe.CommandRequest.Builder rb = Pipe.CommandRequest.newBuilder(msg);
+			Pipe.Payload.Builder pb = Pipe.Payload.newBuilder();
+			pb.setErr(eb);
+
 			channel.write(rb.build());
 		}
 
@@ -124,14 +91,54 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	 *            The message
 	 */
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
-		handleMessage(msg, ctx.channel());
+	protected void channelRead0(ChannelHandlerContext ctx, Pipe.CommandRequest msg) throws Exception {
+		//handleMessage(msg, ctx.channel());
+		queueInstance(ctx.channel()).enqueueRequest(msg,ctx.channel());
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		logger.error("Unexpected exception from downstream.", cause);
 		ctx.close();
+	}
+
+	/**
+	 * Isolate how the server finds the queue. Note this cannot return null.
+	 *
+	 * @param channel
+	 * @return
+	 */
+	private ChannelQueue queueInstance(Channel channel) {
+		// if a single queue is needed, this is where we would obtain a
+		// handle to it.
+
+		if (queue != null)
+			return queue;
+		else {
+			queue = QueueFactory.getInstance(channel,conf);
+
+			// on close remove from queue
+			channel.closeFuture().addListener(new ConnectionCloseListener(queue));
+		}
+
+		return queue;
+	}
+
+	public static class ConnectionCloseListener implements ChannelFutureListener {
+
+		ChannelQueue inQueue;
+
+		public ConnectionCloseListener(ChannelQueue queue){
+			inQueue = queue;
+		}
+
+		@Override
+		public void operationComplete(ChannelFuture channelFuture) throws Exception {
+
+			if(inQueue!=null)
+				inQueue.shutdown(true);
+			inQueue = null;
+		}
 	}
 
 }

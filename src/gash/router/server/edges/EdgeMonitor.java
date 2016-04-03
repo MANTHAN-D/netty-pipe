@@ -16,6 +16,7 @@
 package gash.router.server.edges;
 
 import gash.router.server.CommandInit;
+import gash.router.server.queue.QueueFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -29,8 +30,8 @@ import org.slf4j.LoggerFactory;
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.server.ServerState;
 import pipe.common.Common.Header;
+import pipe.work.Work;
 import pipe.work.Work.Heartbeat;
-import pipe.work.Work.WorkMessage;
 import pipe.work.Work.WorkState;
 
 import gash.router.client.CommConnection;
@@ -74,7 +75,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		inboundEdges.createIfNew(ref, host, port);
 	}
 
-	private WorkMessage createHB(EdgeInfo ei) {
+	private Work.WorkRequest createHB(EdgeInfo ei) {
 		WorkState.Builder sb = WorkState.newBuilder();
 		sb.setEnqueued(-1);
 		sb.setProcessed(-1);
@@ -82,15 +83,19 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		Heartbeat.Builder bb = Heartbeat.newBuilder();
 		bb.setState(sb);
 
+		Work.Payload.Builder py= Work.Payload.newBuilder();
+		py.setBeat(bb);
+
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(state.getConf().getNodeId());
 		hb.setDestination(-1);
 		hb.setTime(System.currentTimeMillis());
 
-		WorkMessage.Builder wb = WorkMessage.newBuilder();
+		Work.WorkRequest.Builder wb = Work.WorkRequest.newBuilder();
 		wb.setHeader(hb);
-		wb.setBeat(bb);
-		wb.setSecret(12345678);//added by manthan
+		wb.setPayload(py);
+		wb.setSecret(12345678);//added by Manthan
+
 		return wb.build();
 	}
 
@@ -104,7 +109,8 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			try {
 				for (EdgeInfo ei : this.outboundEdges.map.values()) {
 					if (ei.isActive() && ei.getChannel() != null) {
-						WorkMessage wm = createHB(ei);
+
+						Work.WorkRequest wm = createHB(ei);
 						logger.info("HeartBeat from: " + ei.getRef());
 						ei.getChannel().writeAndFlush(wm);
 					} else {
@@ -113,6 +119,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 						logger.info("trying to connect to node " + ei.getRef());
 						//CommConnection commC = CommConnection.initConnection(ei.getHost(),ei.getPort());
 						ei.setChannel(channel); //pranav
+						ei.setQueue(QueueFactory.getInstance(channel,state));
 						ei.setActive(true);
 						logger.info("connected to node channel " + ei.getRef() + ei.isActive()+ei.getChannel());
 					}
@@ -155,6 +162,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			logger.info("New edge added, trying to connect to node " + ei.getRef());
 			CommConnection commC = CommConnection.initConnection(ei.getHost(),ei.getPort());
 			ei.setChannel(commC.getChannel());
+			ei.setQueue(QueueFactory.getInstance(commC.getChannel(),state));
 			ei.setActive(true);
 			logger.info("New edge added and connected to node " + ei.getRef() + ei.isActive());
 		}
@@ -167,6 +175,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			logger.info("Edge removed, trying to disconnect to node " + ei.getRef());		
 			ei.getChannel().close();
 			ei.setActive(false);
+			ei.getQueue().shutdown(false);
 			outboundEdges.removeNode(ei.getRef());
 			logger.info("Edge removed and disconnected from node " + ei.getRef() + ei.isActive());
 			ei = null; // making it available for garbage collection
@@ -196,6 +205,8 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				if(newOutboundEdge != null){
 					//Edge already exists. Simply add it to new Map
 					newOutBoundEdges.map.put(newOutboundEdge.getRef(),newOutboundEdge);
+					if(null != newOutboundEdge.getQueue())
+						newOutboundEdge.getQueue().setState(state);
 				}
 				else{
 					//edge is new and doen't exist
@@ -204,6 +215,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 						onAdd(newOutboundEdge);
 				}
 			}
+			//TODO: Inactive edge so that whenerver edge comes up back it can serve previous queue request
 			for(EdgeInfo ei : outboundEdges.map.values()){
 				onRemove(ei);
 			}

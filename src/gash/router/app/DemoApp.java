@@ -15,10 +15,11 @@
  */
 package gash.router.app;
 
+
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
 import gash.router.client.MessageClient;
-import routing.Pipe.CommandMessage;
+import routing.Pipe;
 
 public class DemoApp implements CommListener {
 	private MessageClient mc;
@@ -56,7 +57,7 @@ public class DemoApp implements CommListener {
 	}
 
 	@Override
-	public void onMessage(CommandMessage msg) {
+	public void onMessage(Pipe.CommandRequest msg) {
 		System.out.println("---> " + msg);
 	}
 
@@ -74,7 +75,7 @@ public class DemoApp implements CommListener {
 			DemoApp da = new DemoApp(mc);
 
 			// do stuff w/ the connection
-			da.ping(2);
+			da.ping(10);
 
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();

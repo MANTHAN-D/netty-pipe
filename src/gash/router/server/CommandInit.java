@@ -10,8 +10,7 @@ import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.codec.compression.ZlibWrapper;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.timeout.IdleStateHandler;
-import routing.Pipe.CommandMessage;
+import routing.Pipe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,7 +50,7 @@ public class CommandInit extends ChannelInitializer<SocketChannel> {
 		//pipeline.addLast("ping", new IdleStateHandler(5, 5, 8, TimeUnit.SECONDS)); // Added by Pranav
 
 		// decoder must be first
-		pipeline.addLast("protobufDecoder", new ProtobufDecoder(CommandMessage.getDefaultInstance()));
+		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Pipe.CommandRequest.getDefaultInstance()));
 		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
 

@@ -9,7 +9,7 @@ import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.codec.compression.ZlibWrapper;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import pipe.work.Work.WorkMessage;
+import pipe.work.Work;
 
 /**
  * Initialize the work channel for messages
@@ -47,7 +47,7 @@ public class WorkInit extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
 
 		// decoder must be first
-		pipeline.addLast("protobufDecoder", new ProtobufDecoder(WorkMessage.getDefaultInstance()));
+		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Work.WorkRequest.getDefaultInstance()));
 		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
 

@@ -10,7 +10,9 @@ message Header {
     required int64 time = 2;
     optional string source_host = 3 [default = ""];
     optional string destination_host = 4 [default = ""];
-   
+
+    optional int32 source = 7;
+
     // if the message is for a specific node, this will be set
     optional int32 destination = 8;
 

@@ -16,7 +16,7 @@
 package gash.router.client;
 
 import pipe.common.Common.Header;
-import routing.Pipe.CommandMessage;
+import routing.Pipe;
 
 /**
  * front-end (proxy) to our service - functional-based
@@ -45,14 +45,16 @@ public class MessageClient {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(999);
 		hb.setTime(System.currentTimeMillis());
-		hb.setDestination(-1);
+		hb.setDestination(6);
 		hb.setSourceHost("192.168.252.1");
 		hb.setDestinationHost("4668");
 		
 
-		CommandMessage.Builder rb = CommandMessage.newBuilder();
+		Pipe.CommandRequest.Builder rb = Pipe.CommandRequest.newBuilder();
 		rb.setHeader(hb);
-		rb.setPing(true);
+		Pipe.Payload.Builder pb = Pipe.Payload.newBuilder();
+		pb.setPing(true);
+		rb.setPayload(pb);
 
 		try {
 			// direct no queue

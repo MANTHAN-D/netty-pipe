@@ -15,6 +15,7 @@
  */
 package gash.router.server.edges;
 
+import gash.router.server.queue.ChannelQueue;
 import io.netty.channel.Channel;
 
 public class EdgeInfo {
@@ -24,6 +25,7 @@ public class EdgeInfo {
 	private long lastHeartbeat = -1;
 	private boolean active = false;
 	private Channel channel;
+	private ChannelQueue queue;
 
 	EdgeInfo(int ref, String host, int port) {
 		this.ref = ref;
@@ -80,4 +82,11 @@ public class EdgeInfo {
 		this.channel = channel;
 	}
 
+	public ChannelQueue getQueue() {
+		return queue;
+	}
+
+	public void setQueue(ChannelQueue queue) {
+		this.queue = queue;
+	}
 }

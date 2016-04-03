@@ -6,3 +6,8 @@ classes/
 
 #ignore .settings folder
 .settings/
+
+#ignore build files
+build_pb.sh
+startServer.sh
+netty-pipe.iml

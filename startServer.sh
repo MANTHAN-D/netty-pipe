@@ -19,4 +19,4 @@ echo -e "\n** config: ${JAVA_ARGS} **\n"
 JAVA_TUNE='-server -Xms500m -Xmx1000m'
 
 
-java ${JAVA_TUNE} -cp .:${SVR_HOME}/lib/'*':${SVR_HOME}/classes ${JAVA_MAIN} ${JAVA_ARGS} 
+java ${JAVA_TUNE} -cp .:${SVR_HOME}/lib/'*':${SVR_HOME}/classes ${JAVA_MAIN} ${JAVA_ARGS}

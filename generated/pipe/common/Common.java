@@ -59,6 +59,15 @@ public final class Common {
         getDestinationHostBytes();
 
     /**
+     * <code>optional int32 source = 7;</code>
+     */
+    boolean hasSource();
+    /**
+     * <code>optional int32 source = 7;</code>
+     */
+    int getSource();
+
+    /**
      * <code>optional int32 destination = 8;</code>
      *
      * <pre>
@@ -174,13 +183,18 @@ public final class Common {
               destinationHost_ = bs;
               break;
             }
-            case 64: {
+            case 56: {
               bitField0_ |= 0x00000010;
+              source_ = input.readInt32();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000020;
               destination_ = input.readInt32();
               break;
             }
             case 80: {
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000040;
               maxHops_ = input.readInt32();
               break;
             }
@@ -338,6 +352,21 @@ public final class Common {
       }
     }
 
+    public static final int SOURCE_FIELD_NUMBER = 7;
+    private int source_;
+    /**
+     * <code>optional int32 source = 7;</code>
+     */
+    public boolean hasSource() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional int32 source = 7;</code>
+     */
+    public int getSource() {
+      return source_;
+    }
+
     public static final int DESTINATION_FIELD_NUMBER = 8;
     private int destination_;
     /**
@@ -348,7 +377,7 @@ public final class Common {
      * </pre>
      */
     public boolean hasDestination() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
      * <code>optional int32 destination = 8;</code>
@@ -372,7 +401,7 @@ public final class Common {
      * </pre>
      */
     public boolean hasMaxHops() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
      * <code>optional int32 max_hops = 10 [default = -1];</code>
@@ -391,6 +420,7 @@ public final class Common {
       time_ = 0L;
       sourceHost_ = "";
       destinationHost_ = "";
+      source_ = 0;
       destination_ = 0;
       maxHops_ = -1;
     }
@@ -428,9 +458,12 @@ public final class Common {
         output.writeBytes(4, getDestinationHostBytes());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(8, destination_);
+        output.writeInt32(7, source_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(8, destination_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(10, maxHops_);
       }
       getUnknownFields().writeTo(output);
@@ -460,9 +493,13 @@ public final class Common {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, destination_);
+          .computeInt32Size(7, source_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, destination_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(10, maxHops_);
       }
@@ -597,10 +634,12 @@ public final class Common {
         bitField0_ = (bitField0_ & ~0x00000004);
         destinationHost_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
-        destination_ = 0;
+        source_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        maxHops_ = -1;
+        destination_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
+        maxHops_ = -1;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -648,9 +687,13 @@ public final class Common {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.destination_ = destination_;
+        result.source_ = source_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
+        }
+        result.destination_ = destination_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
         }
         result.maxHops_ = maxHops_;
         result.bitField0_ = to_bitField0_;
@@ -684,6 +727,9 @@ public final class Common {
           bitField0_ |= 0x00000008;
           destinationHost_ = other.destinationHost_;
           onChanged();
+        }
+        if (other.hasSource()) {
+          setSource(other.getSource());
         }
         if (other.hasDestination()) {
           setDestination(other.getDestination());
@@ -942,6 +988,38 @@ public final class Common {
         return this;
       }
 
+      private int source_ ;
+      /**
+       * <code>optional int32 source = 7;</code>
+       */
+      public boolean hasSource() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional int32 source = 7;</code>
+       */
+      public int getSource() {
+        return source_;
+      }
+      /**
+       * <code>optional int32 source = 7;</code>
+       */
+      public Builder setSource(int value) {
+        bitField0_ |= 0x00000010;
+        source_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 source = 7;</code>
+       */
+      public Builder clearSource() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        source_ = 0;
+        onChanged();
+        return this;
+      }
+
       private int destination_ ;
       /**
        * <code>optional int32 destination = 8;</code>
@@ -951,7 +1029,7 @@ public final class Common {
        * </pre>
        */
       public boolean hasDestination() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>optional int32 destination = 8;</code>
@@ -971,7 +1049,7 @@ public final class Common {
        * </pre>
        */
       public Builder setDestination(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         destination_ = value;
         onChanged();
         return this;
@@ -984,7 +1062,7 @@ public final class Common {
        * </pre>
        */
       public Builder clearDestination() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         destination_ = 0;
         onChanged();
         return this;
@@ -1000,7 +1078,7 @@ public final class Common {
        * </pre>
        */
       public boolean hasMaxHops() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <code>optional int32 max_hops = 10 [default = -1];</code>
@@ -1022,7 +1100,7 @@ public final class Common {
        * </pre>
        */
       public Builder setMaxHops(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         maxHops_ = value;
         onChanged();
         return this;
@@ -1036,7 +1114,7 @@ public final class Common {
        * </pre>
        */
       public Builder clearMaxHops() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         maxHops_ = -1;
         onChanged();
         return this;
@@ -1712,12 +1790,12 @@ public final class Common {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014common.proto\"\205\001\n\006Header\022\017\n\007node_id\030\001 \002" +
+      "\n\014common.proto\"\225\001\n\006Header\022\017\n\007node_id\030\001 \002" +
       "(\005\022\014\n\004time\030\002 \002(\003\022\025\n\013source_host\030\003 \001(\t:\000\022" +
-      "\032\n\020destination_host\030\004 \001(\t:\000\022\023\n\013destinati" +
-      "on\030\010 \001(\005\022\024\n\010max_hops\030\n \001(\005:\002-1\"6\n\007Failur" +
-      "e\022\n\n\002id\030\001 \002(\005\022\016\n\006ref_id\030\002 \001(\005\022\017\n\007message" +
-      "\030\003 \001(\tB\017\n\013pipe.commonH\001"
+      "\032\n\020destination_host\030\004 \001(\t:\000\022\016\n\006source\030\007 " +
+      "\001(\005\022\023\n\013destination\030\010 \001(\005\022\024\n\010max_hops\030\n \001" +
+      "(\005:\002-1\"6\n\007Failure\022\n\n\002id\030\001 \002(\005\022\016\n\006ref_id\030" +
+      "\002 \001(\005\022\017\n\007message\030\003 \001(\tB\017\n\013pipe.commonH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1736,7 +1814,7 @@ public final class Common {
     internal_static_Header_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Header_descriptor,
-        new java.lang.String[] { "NodeId", "Time", "SourceHost", "DestinationHost", "Destination", "MaxHops", });
+        new java.lang.String[] { "NodeId", "Time", "SourceHost", "DestinationHost", "Source", "Destination", "MaxHops", });
     internal_static_Failure_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Failure_fieldAccessorTable = new
