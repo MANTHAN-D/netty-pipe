@@ -1623,6 +1623,32 @@ public final class Work {
     pipe.election.Election.LeaderStatusOrBuilder getLeaderOrBuilder();
 
     /**
+     * <code>optional .RaftMessage raftmsg = 9;</code>
+     */
+    boolean hasRaftmsg();
+    /**
+     * <code>optional .RaftMessage raftmsg = 9;</code>
+     */
+    pipe.election.Election.RaftMessage getRaftmsg();
+    /**
+     * <code>optional .RaftMessage raftmsg = 9;</code>
+     */
+    pipe.election.Election.RaftMessageOrBuilder getRaftmsgOrBuilder();
+
+    /**
+     * <code>optional .LeaderElection election = 10;</code>
+     */
+    boolean hasElection();
+    /**
+     * <code>optional .LeaderElection election = 10;</code>
+     */
+    pipe.election.Election.LeaderElection getElection();
+    /**
+     * <code>optional .LeaderElection election = 10;</code>
+     */
+    pipe.election.Election.LeaderElectionOrBuilder getElectionOrBuilder();
+
+    /**
      * <code>optional .Query query = 16;</code>
      */
     boolean hasQuery();
@@ -1770,9 +1796,35 @@ public final class Work {
               bitField0_ |= 0x00000020;
               break;
             }
+            case 74: {
+              pipe.election.Election.RaftMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                subBuilder = raftmsg_.toBuilder();
+              }
+              raftmsg_ = input.readMessage(pipe.election.Election.RaftMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(raftmsg_);
+                raftmsg_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000040;
+              break;
+            }
+            case 82: {
+              pipe.election.Election.LeaderElection.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                subBuilder = election_.toBuilder();
+              }
+              election_ = input.readMessage(pipe.election.Election.LeaderElection.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(election_);
+                election_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000080;
+              break;
+            }
             case 130: {
               storage.Storage.Query.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 subBuilder = query_.toBuilder();
               }
               query_ = input.readMessage(storage.Storage.Query.PARSER, extensionRegistry);
@@ -1780,12 +1832,12 @@ public final class Work {
                 subBuilder.mergeFrom(query_);
                 query_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000040;
+              bitField0_ |= 0x00000100;
               break;
             }
             case 138: {
               storage.Storage.Response.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000080) == 0x00000080)) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = response_.toBuilder();
               }
               response_ = input.readMessage(storage.Storage.Response.PARSER, extensionRegistry);
@@ -1793,7 +1845,7 @@ public final class Work {
                 subBuilder.mergeFrom(response_);
                 response_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000080;
+              bitField0_ |= 0x00000200;
               break;
             }
           }
@@ -1976,13 +2028,55 @@ public final class Work {
       return leader_;
     }
 
+    public static final int RAFTMSG_FIELD_NUMBER = 9;
+    private pipe.election.Election.RaftMessage raftmsg_;
+    /**
+     * <code>optional .RaftMessage raftmsg = 9;</code>
+     */
+    public boolean hasRaftmsg() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .RaftMessage raftmsg = 9;</code>
+     */
+    public pipe.election.Election.RaftMessage getRaftmsg() {
+      return raftmsg_;
+    }
+    /**
+     * <code>optional .RaftMessage raftmsg = 9;</code>
+     */
+    public pipe.election.Election.RaftMessageOrBuilder getRaftmsgOrBuilder() {
+      return raftmsg_;
+    }
+
+    public static final int ELECTION_FIELD_NUMBER = 10;
+    private pipe.election.Election.LeaderElection election_;
+    /**
+     * <code>optional .LeaderElection election = 10;</code>
+     */
+    public boolean hasElection() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional .LeaderElection election = 10;</code>
+     */
+    public pipe.election.Election.LeaderElection getElection() {
+      return election_;
+    }
+    /**
+     * <code>optional .LeaderElection election = 10;</code>
+     */
+    public pipe.election.Election.LeaderElectionOrBuilder getElectionOrBuilder() {
+      return election_;
+    }
+
     public static final int QUERY_FIELD_NUMBER = 16;
     private storage.Storage.Query query_;
     /**
      * <code>optional .Query query = 16;</code>
      */
     public boolean hasQuery() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
      * <code>optional .Query query = 16;</code>
@@ -2003,7 +2097,7 @@ public final class Work {
      * <code>optional .Response response = 17;</code>
      */
     public boolean hasResponse() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
      * <code>optional .Response response = 17;</code>
@@ -2025,6 +2119,8 @@ public final class Work {
       task_ = pipe.work.Work.Task.getDefaultInstance();
       state_ = pipe.work.Work.WorkState.getDefaultInstance();
       leader_ = pipe.election.Election.LeaderStatus.getDefaultInstance();
+      raftmsg_ = pipe.election.Election.RaftMessage.getDefaultInstance();
+      election_ = pipe.election.Election.LeaderElection.getDefaultInstance();
       query_ = storage.Storage.Query.getDefaultInstance();
       response_ = storage.Storage.Response.getDefaultInstance();
     }
@@ -2060,6 +2156,12 @@ public final class Work {
       }
       if (hasLeader()) {
         if (!getLeader().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasElection()) {
+        if (!getElection().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -2102,9 +2204,15 @@ public final class Work {
         output.writeMessage(8, leader_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeMessage(16, query_);
+        output.writeMessage(9, raftmsg_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeMessage(10, election_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeMessage(16, query_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeMessage(17, response_);
       }
       getUnknownFields().writeTo(output);
@@ -2142,9 +2250,17 @@ public final class Work {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, query_);
+          .computeMessageSize(9, raftmsg_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, election_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, query_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(17, response_);
       }
@@ -2262,6 +2378,8 @@ public final class Work {
           getTaskFieldBuilder();
           getStateFieldBuilder();
           getLeaderFieldBuilder();
+          getRaftmsgFieldBuilder();
+          getElectionFieldBuilder();
           getQueryFieldBuilder();
           getResponseFieldBuilder();
         }
@@ -2304,18 +2422,30 @@ public final class Work {
           leaderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000020);
+        if (raftmsgBuilder_ == null) {
+          raftmsg_ = pipe.election.Election.RaftMessage.getDefaultInstance();
+        } else {
+          raftmsgBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        if (electionBuilder_ == null) {
+          election_ = pipe.election.Election.LeaderElection.getDefaultInstance();
+        } else {
+          electionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (queryBuilder_ == null) {
           query_ = storage.Storage.Query.getDefaultInstance();
         } else {
           queryBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000100);
         if (responseBuilder_ == null) {
           response_ = storage.Storage.Response.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -2391,13 +2521,29 @@ public final class Work {
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
+        if (raftmsgBuilder_ == null) {
+          result.raftmsg_ = raftmsg_;
+        } else {
+          result.raftmsg_ = raftmsgBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        if (electionBuilder_ == null) {
+          result.election_ = election_;
+        } else {
+          result.election_ = electionBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
         if (queryBuilder_ == null) {
           result.query_ = query_;
         } else {
           result.query_ = queryBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
         }
         if (responseBuilder_ == null) {
           result.response_ = response_;
@@ -2438,6 +2584,12 @@ public final class Work {
         if (other.hasLeader()) {
           mergeLeader(other.getLeader());
         }
+        if (other.hasRaftmsg()) {
+          mergeRaftmsg(other.getRaftmsg());
+        }
+        if (other.hasElection()) {
+          mergeElection(other.getElection());
+        }
         if (other.hasQuery()) {
           mergeQuery(other.getQuery());
         }
@@ -2475,6 +2627,12 @@ public final class Work {
         }
         if (hasLeader()) {
           if (!getLeader().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasElection()) {
+          if (!getElection().isInitialized()) {
             
             return false;
           }
@@ -3177,6 +3335,238 @@ public final class Work {
         return leaderBuilder_;
       }
 
+      private pipe.election.Election.RaftMessage raftmsg_ = pipe.election.Election.RaftMessage.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          pipe.election.Election.RaftMessage, pipe.election.Election.RaftMessage.Builder, pipe.election.Election.RaftMessageOrBuilder> raftmsgBuilder_;
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public boolean hasRaftmsg() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public pipe.election.Election.RaftMessage getRaftmsg() {
+        if (raftmsgBuilder_ == null) {
+          return raftmsg_;
+        } else {
+          return raftmsgBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public Builder setRaftmsg(pipe.election.Election.RaftMessage value) {
+        if (raftmsgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          raftmsg_ = value;
+          onChanged();
+        } else {
+          raftmsgBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public Builder setRaftmsg(
+          pipe.election.Election.RaftMessage.Builder builderForValue) {
+        if (raftmsgBuilder_ == null) {
+          raftmsg_ = builderForValue.build();
+          onChanged();
+        } else {
+          raftmsgBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public Builder mergeRaftmsg(pipe.election.Election.RaftMessage value) {
+        if (raftmsgBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+              raftmsg_ != pipe.election.Election.RaftMessage.getDefaultInstance()) {
+            raftmsg_ =
+              pipe.election.Election.RaftMessage.newBuilder(raftmsg_).mergeFrom(value).buildPartial();
+          } else {
+            raftmsg_ = value;
+          }
+          onChanged();
+        } else {
+          raftmsgBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public Builder clearRaftmsg() {
+        if (raftmsgBuilder_ == null) {
+          raftmsg_ = pipe.election.Election.RaftMessage.getDefaultInstance();
+          onChanged();
+        } else {
+          raftmsgBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public pipe.election.Election.RaftMessage.Builder getRaftmsgBuilder() {
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return getRaftmsgFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      public pipe.election.Election.RaftMessageOrBuilder getRaftmsgOrBuilder() {
+        if (raftmsgBuilder_ != null) {
+          return raftmsgBuilder_.getMessageOrBuilder();
+        } else {
+          return raftmsg_;
+        }
+      }
+      /**
+       * <code>optional .RaftMessage raftmsg = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          pipe.election.Election.RaftMessage, pipe.election.Election.RaftMessage.Builder, pipe.election.Election.RaftMessageOrBuilder> 
+          getRaftmsgFieldBuilder() {
+        if (raftmsgBuilder_ == null) {
+          raftmsgBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              pipe.election.Election.RaftMessage, pipe.election.Election.RaftMessage.Builder, pipe.election.Election.RaftMessageOrBuilder>(
+                  getRaftmsg(),
+                  getParentForChildren(),
+                  isClean());
+          raftmsg_ = null;
+        }
+        return raftmsgBuilder_;
+      }
+
+      private pipe.election.Election.LeaderElection election_ = pipe.election.Election.LeaderElection.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          pipe.election.Election.LeaderElection, pipe.election.Election.LeaderElection.Builder, pipe.election.Election.LeaderElectionOrBuilder> electionBuilder_;
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public boolean hasElection() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public pipe.election.Election.LeaderElection getElection() {
+        if (electionBuilder_ == null) {
+          return election_;
+        } else {
+          return electionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public Builder setElection(pipe.election.Election.LeaderElection value) {
+        if (electionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          election_ = value;
+          onChanged();
+        } else {
+          electionBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public Builder setElection(
+          pipe.election.Election.LeaderElection.Builder builderForValue) {
+        if (electionBuilder_ == null) {
+          election_ = builderForValue.build();
+          onChanged();
+        } else {
+          electionBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public Builder mergeElection(pipe.election.Election.LeaderElection value) {
+        if (electionBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) == 0x00000080) &&
+              election_ != pipe.election.Election.LeaderElection.getDefaultInstance()) {
+            election_ =
+              pipe.election.Election.LeaderElection.newBuilder(election_).mergeFrom(value).buildPartial();
+          } else {
+            election_ = value;
+          }
+          onChanged();
+        } else {
+          electionBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public Builder clearElection() {
+        if (electionBuilder_ == null) {
+          election_ = pipe.election.Election.LeaderElection.getDefaultInstance();
+          onChanged();
+        } else {
+          electionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
+        return this;
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public pipe.election.Election.LeaderElection.Builder getElectionBuilder() {
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return getElectionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      public pipe.election.Election.LeaderElectionOrBuilder getElectionOrBuilder() {
+        if (electionBuilder_ != null) {
+          return electionBuilder_.getMessageOrBuilder();
+        } else {
+          return election_;
+        }
+      }
+      /**
+       * <code>optional .LeaderElection election = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          pipe.election.Election.LeaderElection, pipe.election.Election.LeaderElection.Builder, pipe.election.Election.LeaderElectionOrBuilder> 
+          getElectionFieldBuilder() {
+        if (electionBuilder_ == null) {
+          electionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              pipe.election.Election.LeaderElection, pipe.election.Election.LeaderElection.Builder, pipe.election.Election.LeaderElectionOrBuilder>(
+                  getElection(),
+                  getParentForChildren(),
+                  isClean());
+          election_ = null;
+        }
+        return electionBuilder_;
+      }
+
       private storage.Storage.Query query_ = storage.Storage.Query.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder> queryBuilder_;
@@ -3184,7 +3574,7 @@ public final class Work {
        * <code>optional .Query query = 16;</code>
        */
       public boolean hasQuery() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
        * <code>optional .Query query = 16;</code>
@@ -3209,7 +3599,7 @@ public final class Work {
         } else {
           queryBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -3223,7 +3613,7 @@ public final class Work {
         } else {
           queryBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -3231,7 +3621,7 @@ public final class Work {
        */
       public Builder mergeQuery(storage.Storage.Query value) {
         if (queryBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
               query_ != storage.Storage.Query.getDefaultInstance()) {
             query_ =
               storage.Storage.Query.newBuilder(query_).mergeFrom(value).buildPartial();
@@ -3242,7 +3632,7 @@ public final class Work {
         } else {
           queryBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -3255,14 +3645,14 @@ public final class Work {
         } else {
           queryBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       /**
        * <code>optional .Query query = 16;</code>
        */
       public storage.Storage.Query.Builder getQueryBuilder() {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000100;
         onChanged();
         return getQueryFieldBuilder().getBuilder();
       }
@@ -3300,7 +3690,7 @@ public final class Work {
        * <code>optional .Response response = 17;</code>
        */
       public boolean hasResponse() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
        * <code>optional .Response response = 17;</code>
@@ -3325,7 +3715,7 @@ public final class Work {
         } else {
           responseBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -3339,7 +3729,7 @@ public final class Work {
         } else {
           responseBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -3347,7 +3737,7 @@ public final class Work {
        */
       public Builder mergeResponse(storage.Storage.Response value) {
         if (responseBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) == 0x00000080) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               response_ != storage.Storage.Response.getDefaultInstance()) {
             response_ =
               storage.Storage.Response.newBuilder(response_).mergeFrom(value).buildPartial();
@@ -3358,7 +3748,7 @@ public final class Work {
         } else {
           responseBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -3371,14 +3761,14 @@ public final class Work {
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
        * <code>optional .Response response = 17;</code>
        */
       public storage.Storage.Response.Builder getResponseBuilder() {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
       }
@@ -4273,15 +4663,16 @@ public final class Work {
       "to\032\rstorage.proto\"0\n\tWorkState\022\020\n\010enqueu" +
       "ed\030\001 \002(\005\022\021\n\tprocessed\030\002 \002(\005\"&\n\tHeartbeat" +
       "\022\031\n\005state\030\001 \002(\0132\n.WorkState\")\n\004Task\022\021\n\ts" +
-      "eries_id\030\001 \002(\003\022\016\n\006seq_id\030\002 \002(\005\"\313\001\n\007Paylo" +
+      "eries_id\030\001 \002(\003\022\016\n\006seq_id\030\002 \002(\005\"\215\002\n\007Paylo" +
       "ad\022\025\n\003err\030\003 \001(\0132\010.Failure\022\014\n\004ping\030\004 \001(\010\022" +
       "\030\n\004beat\030\005 \001(\0132\n.Heartbeat\022\023\n\004task\030\006 \001(\0132" +
       "\005.Task\022\031\n\005state\030\007 \001(\0132\n.WorkState\022\035\n\006lea" +
-      "der\030\010 \001(\0132\r.LeaderStatus\022\025\n\005query\030\020 \001(\0132" +
-      "\006.Query\022\033\n\010response\030\021 \001(\0132\t.Response\"Q\n\013",
-      "WorkRequest\022\027\n\006header\030\001 \002(\0132\007.Header\022\016\n\006" +
-      "secret\030\002 \001(\003\022\031\n\007payload\030\003 \002(\0132\010.PayloadB" +
-      "\r\n\tpipe.workH\001"
+      "der\030\010 \001(\0132\r.LeaderStatus\022\035\n\007raftmsg\030\t \001(" +
+      "\0132\014.RaftMessage\022!\n\010election\030\n \001(\0132\017.Lead",
+      "erElection\022\025\n\005query\030\020 \001(\0132\006.Query\022\033\n\010res" +
+      "ponse\030\021 \001(\0132\t.Response\"Q\n\013WorkRequest\022\027\n" +
+      "\006header\030\001 \002(\0132\007.Header\022\016\n\006secret\030\002 \001(\003\022\031" +
+      "\n\007payload\030\003 \002(\0132\010.PayloadB\r\n\tpipe.workH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4321,7 +4712,7 @@ public final class Work {
     internal_static_Payload_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Payload_descriptor,
-        new java.lang.String[] { "Err", "Ping", "Beat", "Task", "State", "Leader", "Query", "Response", });
+        new java.lang.String[] { "Err", "Ping", "Beat", "Task", "State", "Leader", "Raftmsg", "Election", "Query", "Response", });
     internal_static_WorkRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_WorkRequest_fieldAccessorTable = new

@@ -34,6 +34,8 @@ message Payload{
     optional Task task = 6;
     optional WorkState state = 7;
     optional LeaderStatus leader = 8;
+    optional RaftMessage raftmsg = 9;
+    optional LeaderElection election = 10;
     optional Query query = 16;
 
     optional Response response = 17;
@@ -52,3 +54,4 @@ message WorkRequest {
 
     required Payload payload = 3;
 }
+

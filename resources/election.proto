@@ -13,9 +13,70 @@ message LeaderStatus {
       LEADERALIVE = 2;
       LEADERDEAD = 3;
    }
-
+   //Raft Action
    enum LeaderQuery {
       WHOISTHELEADER = 1;
       THELEADERIS = 2;
+      DECLAREELECTION = 3;
    }
 }
+
+message LeaderElection {
+   required int32 elect_id = 2; // election ID (not candidate)
+   required int32 candidate_id = 3;
+   optional string desc = 4;
+   required ElectAction action = 5;
+
+   // this is seconds since
+   optional int64 expires = 6 [default = -1];
+
+   // the number of times this message should be propagated.
+   // For Flooding, this is the diameter of the graph to ensure
+   // a message can reach all nodes. If the diameter is unknown,
+   // limiting the hops will create non-deterministic results.
+   optional int32 hops = 7 [default = -1];
+   enum ElectAction {
+      DECLAREELECTION = 1;
+      NOMINATE = 2;
+      ABSTAIN = 3;
+      DECLAREWINNER = 4;
+      DECLAREVOID = 5;
+      WHOISTHELEADER = 6;
+      THELEADERIS = 7;
+   }
+
+}
+
+message LogEntries {
+   optional int32 log_index = 1;
+   optional string log_data = 2;
+}
+
+message RaftMessage{
+   optional int32 term = 3;
+   optional int32 logIndex = 4;
+   optional int32 prevTerm = 5;
+   optional int32 prevlogIndex = 6;
+   optional int32 leader = 8;
+   optional RaftAction raftAction = 7;
+   enum RaftAction {
+      APPEND = 1;
+      REQUESTVOTE = 2;
+      LEADER = 3;
+      VOTE = 4;
+      WHOISTHELEADER = 5;
+      THELEADERIS = 6;
+      APPENDRESPONSE = 7;
+   }
+
+   optional RaftAppendAction raftAppendAction = 9;
+   enum RaftAppendAction {
+      APPENDHEARTBEAT = 1;
+      APPENDLOG = 2;
+      APPENDVALUE = 3;
+   }
+   optional int32 success = 10;
+   repeated LogEntries entries = 11;
+}
+
+

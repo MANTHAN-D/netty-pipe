@@ -38,10 +38,12 @@ import pipe.work.Work.WorkState;
 import gash.router.client.CommConnection;
 
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.Iterator;
 
 public class EdgeMonitor implements EdgeListener, Runnable {
 	protected static Logger logger = LoggerFactory.getLogger("edge monitor");
+	protected static AtomicReference<EdgeMonitor> instance = new AtomicReference<EdgeMonitor>(); // Pranav 4/2/2016
 
 	private EdgeList outboundEdges;
 	private EdgeList inboundEdges;
@@ -67,11 +69,21 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				outboundEdges.addNode(e.getId(), e.getHost(), e.getPort());
 			}
 		}
+		instance.compareAndSet(null,this); //4/2/2016
 
 		// cannot go below 2 sec
 		if (state.getConf().getHeartbeatDt() > this.dt)
 			this.dt = state.getConf().getHeartbeatDt();
 	}
+
+	/*BOC Pranav
+		4/0/2016
+		EdgeMonitor instance
+	 */
+	public static EdgeMonitor getInstance(){
+		return instance.get();
+	}
+	//EOC
 
 	public void createInboundIfNew(int ref, String host, int port) {
 		inboundEdges.createIfNew(ref, host, port);
@@ -209,7 +221,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	 * Author : Manthan
 	 * */
 	public void updateState(ServerState newState){
-		//logger.info("Update State started.....");
 		EdgeInfo newOutboundEdge = null;
 		this.state = newState;
 		this.state.setEmon(this);
@@ -251,6 +262,10 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			this.dt = state.getConf().getHeartbeatDt();
 
 		newOutboundEdge = null;
-		//logger.info("Update State done.....");
+	}
+
+	public Channel getConnection(Integer host)
+	{
+		return outboundEdges.getNode(host).getChannel();
 	}
 }

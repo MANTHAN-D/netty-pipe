@@ -12,7 +12,7 @@
 project_base="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # which protoc that you built (if not in your path)
-PROTOC_HOME=/Users//rushil/Downloads/protobuf-2.6.0
+PROTOC_HOME=/home/pranav/protobuf-2.6.1
 
 if [ -d ${project_base}/generated ]; then
   echo "removing contents of ${project_base}/generated"

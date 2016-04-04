@@ -38,6 +38,7 @@ public class RoutingConf {
 	private boolean internalNode = true;
 	private int heartbeatDt = 2000;
 	private List<RoutingEntry> routing;
+	private String electionImplementation;
 
 	public HashMap<String, Integer> asHashMap() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -105,6 +106,14 @@ public class RoutingConf {
 
 	public void setRouting(List<RoutingEntry> conf) {
 		this.routing = conf;
+	}
+
+	public String getElectionImplementation() {
+		return electionImplementation;
+	}
+
+	public void setElectionImplementation(String electionImplementation) {
+		this.electionImplementation = electionImplementation;
 	}
 
 	@XmlRootElement(name = "entry")
