@@ -10,6 +10,7 @@ message Header {
     required int64 time = 2;
     optional string source_host = 3 [default = ""];
     optional string destination_host = 4 [default = ""];
+    repeated VectorClock path = 5;
 
     optional int32 source = 7;
 
@@ -25,6 +26,12 @@ message Failure {
     required int32 id = 1;
     optional int32 ref_id = 2;
     optional string message = 3;
+}
+
+message VectorClock {
+    required int32 node_id = 1;
+    required int32 version = 2;
+    required int64 time = 3;
 }
 
 /**

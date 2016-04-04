@@ -59,6 +59,30 @@ public final class Common {
         getDestinationHostBytes();
 
     /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    java.util.List<pipe.common.Common.VectorClock> 
+        getPathList();
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    pipe.common.Common.VectorClock getPath(int index);
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    int getPathCount();
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    java.util.List<? extends pipe.common.Common.VectorClockOrBuilder> 
+        getPathOrBuilderList();
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    pipe.common.Common.VectorClockOrBuilder getPathOrBuilder(
+        int index);
+
+    /**
      * <code>optional int32 source = 7;</code>
      */
     boolean hasSource();
@@ -183,6 +207,14 @@ public final class Common {
               destinationHost_ = bs;
               break;
             }
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                path_ = new java.util.ArrayList<pipe.common.Common.VectorClock>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              path_.add(input.readMessage(pipe.common.Common.VectorClock.PARSER, extensionRegistry));
+              break;
+            }
             case 56: {
               bitField0_ |= 0x00000010;
               source_ = input.readInt32();
@@ -206,6 +238,9 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          path_ = java.util.Collections.unmodifiableList(path_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -352,6 +387,41 @@ public final class Common {
       }
     }
 
+    public static final int PATH_FIELD_NUMBER = 5;
+    private java.util.List<pipe.common.Common.VectorClock> path_;
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    public java.util.List<pipe.common.Common.VectorClock> getPathList() {
+      return path_;
+    }
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    public java.util.List<? extends pipe.common.Common.VectorClockOrBuilder> 
+        getPathOrBuilderList() {
+      return path_;
+    }
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    public int getPathCount() {
+      return path_.size();
+    }
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    public pipe.common.Common.VectorClock getPath(int index) {
+      return path_.get(index);
+    }
+    /**
+     * <code>repeated .VectorClock path = 5;</code>
+     */
+    public pipe.common.Common.VectorClockOrBuilder getPathOrBuilder(
+        int index) {
+      return path_.get(index);
+    }
+
     public static final int SOURCE_FIELD_NUMBER = 7;
     private int source_;
     /**
@@ -420,6 +490,7 @@ public final class Common {
       time_ = 0L;
       sourceHost_ = "";
       destinationHost_ = "";
+      path_ = java.util.Collections.emptyList();
       source_ = 0;
       destination_ = 0;
       maxHops_ = -1;
@@ -437,6 +508,12 @@ public final class Common {
       if (!hasTime()) {
         memoizedIsInitialized = 0;
         return false;
+      }
+      for (int i = 0; i < getPathCount(); i++) {
+        if (!getPath(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -456,6 +533,9 @@ public final class Common {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, getDestinationHostBytes());
+      }
+      for (int i = 0; i < path_.size(); i++) {
+        output.writeMessage(5, path_.get(i));
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(7, source_);
@@ -490,6 +570,10 @@ public final class Common {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, getDestinationHostBytes());
+      }
+      for (int i = 0; i < path_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, path_.get(i));
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -618,6 +702,7 @@ public final class Common {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getPathFieldBuilder();
         }
       }
       private static Builder create() {
@@ -634,12 +719,18 @@ public final class Common {
         bitField0_ = (bitField0_ & ~0x00000004);
         destinationHost_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        if (pathBuilder_ == null) {
+          path_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          pathBuilder_.clear();
+        }
         source_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        destination_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        maxHops_ = -1;
+        destination_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
+        maxHops_ = -1;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -684,15 +775,24 @@ public final class Common {
           to_bitField0_ |= 0x00000008;
         }
         result.destinationHost_ = destinationHost_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+        if (pathBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            path_ = java.util.Collections.unmodifiableList(path_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.path_ = path_;
+        } else {
+          result.path_ = pathBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000010;
         }
         result.source_ = source_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000020;
         }
         result.destination_ = destination_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000040;
         }
         result.maxHops_ = maxHops_;
@@ -728,6 +828,32 @@ public final class Common {
           destinationHost_ = other.destinationHost_;
           onChanged();
         }
+        if (pathBuilder_ == null) {
+          if (!other.path_.isEmpty()) {
+            if (path_.isEmpty()) {
+              path_ = other.path_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensurePathIsMutable();
+              path_.addAll(other.path_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.path_.isEmpty()) {
+            if (pathBuilder_.isEmpty()) {
+              pathBuilder_.dispose();
+              pathBuilder_ = null;
+              path_ = other.path_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              pathBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getPathFieldBuilder() : null;
+            } else {
+              pathBuilder_.addAllMessages(other.path_);
+            }
+          }
+        }
         if (other.hasSource()) {
           setSource(other.getSource());
         }
@@ -749,6 +875,12 @@ public final class Common {
         if (!hasTime()) {
           
           return false;
+        }
+        for (int i = 0; i < getPathCount(); i++) {
+          if (!getPath(i).isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -988,12 +1120,252 @@ public final class Common {
         return this;
       }
 
+      private java.util.List<pipe.common.Common.VectorClock> path_ =
+        java.util.Collections.emptyList();
+      private void ensurePathIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          path_ = new java.util.ArrayList<pipe.common.Common.VectorClock>(path_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          pipe.common.Common.VectorClock, pipe.common.Common.VectorClock.Builder, pipe.common.Common.VectorClockOrBuilder> pathBuilder_;
+
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public java.util.List<pipe.common.Common.VectorClock> getPathList() {
+        if (pathBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(path_);
+        } else {
+          return pathBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public int getPathCount() {
+        if (pathBuilder_ == null) {
+          return path_.size();
+        } else {
+          return pathBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public pipe.common.Common.VectorClock getPath(int index) {
+        if (pathBuilder_ == null) {
+          return path_.get(index);
+        } else {
+          return pathBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder setPath(
+          int index, pipe.common.Common.VectorClock value) {
+        if (pathBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePathIsMutable();
+          path_.set(index, value);
+          onChanged();
+        } else {
+          pathBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder setPath(
+          int index, pipe.common.Common.VectorClock.Builder builderForValue) {
+        if (pathBuilder_ == null) {
+          ensurePathIsMutable();
+          path_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          pathBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder addPath(pipe.common.Common.VectorClock value) {
+        if (pathBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePathIsMutable();
+          path_.add(value);
+          onChanged();
+        } else {
+          pathBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder addPath(
+          int index, pipe.common.Common.VectorClock value) {
+        if (pathBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePathIsMutable();
+          path_.add(index, value);
+          onChanged();
+        } else {
+          pathBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder addPath(
+          pipe.common.Common.VectorClock.Builder builderForValue) {
+        if (pathBuilder_ == null) {
+          ensurePathIsMutable();
+          path_.add(builderForValue.build());
+          onChanged();
+        } else {
+          pathBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder addPath(
+          int index, pipe.common.Common.VectorClock.Builder builderForValue) {
+        if (pathBuilder_ == null) {
+          ensurePathIsMutable();
+          path_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          pathBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder addAllPath(
+          java.lang.Iterable<? extends pipe.common.Common.VectorClock> values) {
+        if (pathBuilder_ == null) {
+          ensurePathIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, path_);
+          onChanged();
+        } else {
+          pathBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder clearPath() {
+        if (pathBuilder_ == null) {
+          path_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          pathBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public Builder removePath(int index) {
+        if (pathBuilder_ == null) {
+          ensurePathIsMutable();
+          path_.remove(index);
+          onChanged();
+        } else {
+          pathBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public pipe.common.Common.VectorClock.Builder getPathBuilder(
+          int index) {
+        return getPathFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public pipe.common.Common.VectorClockOrBuilder getPathOrBuilder(
+          int index) {
+        if (pathBuilder_ == null) {
+          return path_.get(index);  } else {
+          return pathBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public java.util.List<? extends pipe.common.Common.VectorClockOrBuilder> 
+           getPathOrBuilderList() {
+        if (pathBuilder_ != null) {
+          return pathBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(path_);
+        }
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public pipe.common.Common.VectorClock.Builder addPathBuilder() {
+        return getPathFieldBuilder().addBuilder(
+            pipe.common.Common.VectorClock.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public pipe.common.Common.VectorClock.Builder addPathBuilder(
+          int index) {
+        return getPathFieldBuilder().addBuilder(
+            index, pipe.common.Common.VectorClock.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .VectorClock path = 5;</code>
+       */
+      public java.util.List<pipe.common.Common.VectorClock.Builder> 
+           getPathBuilderList() {
+        return getPathFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          pipe.common.Common.VectorClock, pipe.common.Common.VectorClock.Builder, pipe.common.Common.VectorClockOrBuilder> 
+          getPathFieldBuilder() {
+        if (pathBuilder_ == null) {
+          pathBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              pipe.common.Common.VectorClock, pipe.common.Common.VectorClock.Builder, pipe.common.Common.VectorClockOrBuilder>(
+                  path_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  getParentForChildren(),
+                  isClean());
+          path_ = null;
+        }
+        return pathBuilder_;
+      }
+
       private int source_ ;
       /**
        * <code>optional int32 source = 7;</code>
        */
       public boolean hasSource() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>optional int32 source = 7;</code>
@@ -1005,7 +1377,7 @@ public final class Common {
        * <code>optional int32 source = 7;</code>
        */
       public Builder setSource(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         source_ = value;
         onChanged();
         return this;
@@ -1014,7 +1386,7 @@ public final class Common {
        * <code>optional int32 source = 7;</code>
        */
       public Builder clearSource() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         source_ = 0;
         onChanged();
         return this;
@@ -1029,7 +1401,7 @@ public final class Common {
        * </pre>
        */
       public boolean hasDestination() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <code>optional int32 destination = 8;</code>
@@ -1049,7 +1421,7 @@ public final class Common {
        * </pre>
        */
       public Builder setDestination(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         destination_ = value;
         onChanged();
         return this;
@@ -1062,7 +1434,7 @@ public final class Common {
        * </pre>
        */
       public Builder clearDestination() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         destination_ = 0;
         onChanged();
         return this;
@@ -1078,7 +1450,7 @@ public final class Common {
        * </pre>
        */
       public boolean hasMaxHops() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
        * <code>optional int32 max_hops = 10 [default = -1];</code>
@@ -1100,7 +1472,7 @@ public final class Common {
        * </pre>
        */
       public Builder setMaxHops(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         maxHops_ = value;
         onChanged();
         return this;
@@ -1114,7 +1486,7 @@ public final class Common {
        * </pre>
        */
       public Builder clearMaxHops() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         maxHops_ = -1;
         onChanged();
         return this;
@@ -1769,6 +2141,583 @@ public final class Common {
     }
 
     // @@protoc_insertion_point(class_scope:Failure)
+  }
+
+  public interface VectorClockOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:VectorClock)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 node_id = 1;</code>
+     */
+    boolean hasNodeId();
+    /**
+     * <code>required int32 node_id = 1;</code>
+     */
+    int getNodeId();
+
+    /**
+     * <code>required int32 version = 2;</code>
+     */
+    boolean hasVersion();
+    /**
+     * <code>required int32 version = 2;</code>
+     */
+    int getVersion();
+
+    /**
+     * <code>required int64 time = 3;</code>
+     */
+    boolean hasTime();
+    /**
+     * <code>required int64 time = 3;</code>
+     */
+    long getTime();
+  }
+  /**
+   * Protobuf type {@code VectorClock}
+   */
+  public static final class VectorClock extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:VectorClock)
+      VectorClockOrBuilder {
+    // Use VectorClock.newBuilder() to construct.
+    private VectorClock(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VectorClock(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VectorClock defaultInstance;
+    public static VectorClock getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VectorClock getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VectorClock(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              nodeId_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              version_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              time_ = input.readInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return pipe.common.Common.internal_static_VectorClock_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return pipe.common.Common.internal_static_VectorClock_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              pipe.common.Common.VectorClock.class, pipe.common.Common.VectorClock.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VectorClock> PARSER =
+        new com.google.protobuf.AbstractParser<VectorClock>() {
+      public VectorClock parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VectorClock(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VectorClock> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NODE_ID_FIELD_NUMBER = 1;
+    private int nodeId_;
+    /**
+     * <code>required int32 node_id = 1;</code>
+     */
+    public boolean hasNodeId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 node_id = 1;</code>
+     */
+    public int getNodeId() {
+      return nodeId_;
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 2;
+    private int version_;
+    /**
+     * <code>required int32 version = 2;</code>
+     */
+    public boolean hasVersion() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 version = 2;</code>
+     */
+    public int getVersion() {
+      return version_;
+    }
+
+    public static final int TIME_FIELD_NUMBER = 3;
+    private long time_;
+    /**
+     * <code>required int64 time = 3;</code>
+     */
+    public boolean hasTime() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int64 time = 3;</code>
+     */
+    public long getTime() {
+      return time_;
+    }
+
+    private void initFields() {
+      nodeId_ = 0;
+      version_ = 0;
+      time_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasNodeId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasVersion()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, nodeId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, version_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, time_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, nodeId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, version_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, time_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static pipe.common.Common.VectorClock parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static pipe.common.Common.VectorClock parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static pipe.common.Common.VectorClock parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static pipe.common.Common.VectorClock parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(pipe.common.Common.VectorClock prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code VectorClock}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:VectorClock)
+        pipe.common.Common.VectorClockOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return pipe.common.Common.internal_static_VectorClock_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return pipe.common.Common.internal_static_VectorClock_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                pipe.common.Common.VectorClock.class, pipe.common.Common.VectorClock.Builder.class);
+      }
+
+      // Construct using pipe.common.Common.VectorClock.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        nodeId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        version_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        time_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return pipe.common.Common.internal_static_VectorClock_descriptor;
+      }
+
+      public pipe.common.Common.VectorClock getDefaultInstanceForType() {
+        return pipe.common.Common.VectorClock.getDefaultInstance();
+      }
+
+      public pipe.common.Common.VectorClock build() {
+        pipe.common.Common.VectorClock result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public pipe.common.Common.VectorClock buildPartial() {
+        pipe.common.Common.VectorClock result = new pipe.common.Common.VectorClock(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.nodeId_ = nodeId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.version_ = version_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.time_ = time_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof pipe.common.Common.VectorClock) {
+          return mergeFrom((pipe.common.Common.VectorClock)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(pipe.common.Common.VectorClock other) {
+        if (other == pipe.common.Common.VectorClock.getDefaultInstance()) return this;
+        if (other.hasNodeId()) {
+          setNodeId(other.getNodeId());
+        }
+        if (other.hasVersion()) {
+          setVersion(other.getVersion());
+        }
+        if (other.hasTime()) {
+          setTime(other.getTime());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasNodeId()) {
+          
+          return false;
+        }
+        if (!hasVersion()) {
+          
+          return false;
+        }
+        if (!hasTime()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        pipe.common.Common.VectorClock parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (pipe.common.Common.VectorClock) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int nodeId_ ;
+      /**
+       * <code>required int32 node_id = 1;</code>
+       */
+      public boolean hasNodeId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 node_id = 1;</code>
+       */
+      public int getNodeId() {
+        return nodeId_;
+      }
+      /**
+       * <code>required int32 node_id = 1;</code>
+       */
+      public Builder setNodeId(int value) {
+        bitField0_ |= 0x00000001;
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 node_id = 1;</code>
+       */
+      public Builder clearNodeId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        nodeId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int version_ ;
+      /**
+       * <code>required int32 version = 2;</code>
+       */
+      public boolean hasVersion() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 version = 2;</code>
+       */
+      public int getVersion() {
+        return version_;
+      }
+      /**
+       * <code>required int32 version = 2;</code>
+       */
+      public Builder setVersion(int value) {
+        bitField0_ |= 0x00000002;
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 version = 2;</code>
+       */
+      public Builder clearVersion() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        version_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long time_ ;
+      /**
+       * <code>required int64 time = 3;</code>
+       */
+      public boolean hasTime() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int64 time = 3;</code>
+       */
+      public long getTime() {
+        return time_;
+      }
+      /**
+       * <code>required int64 time = 3;</code>
+       */
+      public Builder setTime(long value) {
+        bitField0_ |= 0x00000004;
+        time_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 time = 3;</code>
+       */
+      public Builder clearTime() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        time_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:VectorClock)
+    }
+
+    static {
+      defaultInstance = new VectorClock(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:VectorClock)
   }
 
   public interface RequestOrBuilder extends
@@ -3309,6 +4258,11 @@ public final class Common {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Failure_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_VectorClock_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_VectorClock_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Request_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3327,17 +4281,19 @@ public final class Common {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014common.proto\"\225\001\n\006Header\022\017\n\007node_id\030\001 \002" +
+      "\n\014common.proto\"\261\001\n\006Header\022\017\n\007node_id\030\001 \002" +
       "(\005\022\014\n\004time\030\002 \002(\003\022\025\n\013source_host\030\003 \001(\t:\000\022" +
-      "\032\n\020destination_host\030\004 \001(\t:\000\022\016\n\006source\030\007 " +
-      "\001(\005\022\023\n\013destination\030\010 \001(\005\022\024\n\010max_hops\030\n \001" +
-      "(\005:\002-1\"6\n\007Failure\022\n\n\002id\030\001 \002(\005\022\016\n\006ref_id\030" +
-      "\002 \001(\005\022\017\n\007message\030\003 \001(\t\"\212\001\n\007Request\022\033\n\004ty" +
-      "pe\030\001 \002(\0162\r.Request.Type\022\014\n\004file\030\002 \001(\014\022\021\n" +
-      "\tfile_name\030\003 \001(\t\022\027\n\006update\030\004 \001(\0132\007.Updat" +
-      "e\"(\n\004Type\022\010\n\004SAVE\020\001\022\n\n\006SEARCH\020\002\022\n\n\006UPDAT" +
-      "E\020\003\")\n\006Update\022\014\n\004file\030\002 \002(\014\022\021\n\tfile_name",
-      "\030\003 \002(\tB\017\n\013pipe.commonH\001"
+      "\032\n\020destination_host\030\004 \001(\t:\000\022\032\n\004path\030\005 \003(" +
+      "\0132\014.VectorClock\022\016\n\006source\030\007 \001(\005\022\023\n\013desti" +
+      "nation\030\010 \001(\005\022\024\n\010max_hops\030\n \001(\005:\002-1\"6\n\007Fa" +
+      "ilure\022\n\n\002id\030\001 \002(\005\022\016\n\006ref_id\030\002 \001(\005\022\017\n\007mes" +
+      "sage\030\003 \001(\t\"=\n\013VectorClock\022\017\n\007node_id\030\001 \002" +
+      "(\005\022\017\n\007version\030\002 \002(\005\022\014\n\004time\030\003 \002(\003\"\212\001\n\007Re" +
+      "quest\022\033\n\004type\030\001 \002(\0162\r.Request.Type\022\014\n\004fi" +
+      "le\030\002 \001(\014\022\021\n\tfile_name\030\003 \001(\t\022\027\n\006update\030\004 ",
+      "\001(\0132\007.Update\"(\n\004Type\022\010\n\004SAVE\020\001\022\n\n\006SEARCH" +
+      "\020\002\022\n\n\006UPDATE\020\003\")\n\006Update\022\014\n\004file\030\002 \002(\014\022\021" +
+      "\n\tfile_name\030\003 \002(\tB\017\n\013pipe.commonH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3356,21 +4312,27 @@ public final class Common {
     internal_static_Header_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Header_descriptor,
-        new java.lang.String[] { "NodeId", "Time", "SourceHost", "DestinationHost", "Source", "Destination", "MaxHops", });
+        new java.lang.String[] { "NodeId", "Time", "SourceHost", "DestinationHost", "Path", "Source", "Destination", "MaxHops", });
     internal_static_Failure_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Failure_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Failure_descriptor,
         new java.lang.String[] { "Id", "RefId", "Message", });
-    internal_static_Request_descriptor =
+    internal_static_VectorClock_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_VectorClock_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_VectorClock_descriptor,
+        new java.lang.String[] { "NodeId", "Version", "Time", });
+    internal_static_Request_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_Request_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Request_descriptor,
         new java.lang.String[] { "Type", "File", "FileName", "Update", });
     internal_static_Update_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_Update_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Update_descriptor,

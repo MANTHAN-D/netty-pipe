@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gash.router.server.election.RaftManager;
 import io.netty.channel.ChannelFutureListener;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -43,6 +44,8 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 
 	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
 	private static EdgeMonitor emon=null; // added by Manthan
+	private static RaftManager mgr = null;//Pranav
+	//private static ElectionManager emgr = null; // Pranav
 	private ArrayList<RoutingConfObserver> routingConfOberverList;// added by Manthan
 
 	// public static final String sPort = "port";
@@ -82,6 +85,10 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		logger.info("Conf updater starting");
 		Thread confUpdateThread = new Thread(new StartRoutingUpdater(this));
 		confUpdateThread.start();
+		//Pranav - raft
+		mgr = RaftManager.initManager(conf);
+		//emgr = ElectionManager.initManager(conf);
+		System.out.print("Raft: " + mgr);
 
 		if (!conf.isInternalNode()) {
 			StartCommandCommunication comm2 = new StartCommandCommunication(conf);
@@ -97,8 +104,8 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		/*// Start the thread that reads any updates in conf File : thread in background // Added by Manthan
 		logger.info("Conf update thread starting");
 		Thread confUpdateThread = new Thread(this);
-		confUpdateThread.start();*/
-
+		confUpdateThread.start();
+		*/
 	}
 
 	/**
@@ -237,19 +244,20 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	 */
 	private static class StartWorkCommunication implements Runnable, RoutingConfObserver {
 		ServerState state;
-
+		//RaftManager mgr;
 		public StartWorkCommunication(RoutingConf conf) {
 			if (conf == null)
 				throw new RuntimeException("missing conf");
 
 			state = new ServerState();
 			state.setConf(conf);
-
 			TaskList tasks = new TaskList(new NoOpBalancer());
 			state.setTasks(tasks);
 
 			emon = new EdgeMonitor(state);//changed by Manthan -> emon is an instance of parent class
 			Thread t = new Thread(emon);
+			// Pranav - RAFT
+
 			t.start();
 		}
 
@@ -280,6 +288,8 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 
 				logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
 						+ f.channel().isWritable() + ", act: " + f.channel().isActive());
+
+				mgr.startMonitor(state); // Pranav - RAFT
 
 				// block until the server socket is closed.
 				f.channel().closeFuture().sync();
